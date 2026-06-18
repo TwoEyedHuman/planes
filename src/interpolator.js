@@ -1,6 +1,5 @@
 const POLL_INTERVAL_MS = 10000
 const GRACE_MS = 5000
-const METERS_PER_DEGREE_LAT = 111320
 
 const tracked = new Map() // icao24 -> { prev, next, pollTime, droppedAt }
 
@@ -44,16 +43,11 @@ export function getInterpolatedPositions(now) {
   for (const [icao24, entry] of tracked) {
     const { prev, next, pollTime } = entry
     const t = Math.min(Math.max((now - pollTime) / POLL_INTERVAL_MS, 0), 1)
-    const headingRad = (next.trueTrack * Math.PI) / 180
-    const metersPerDegreeLon = METERS_PER_DEGREE_LAT * Math.cos((prev.lat * Math.PI) / 180)
-
-    const dLat = (next.velocity * Math.cos(headingRad) * t * 10) / METERS_PER_DEGREE_LAT
-    const dLon = (next.velocity * Math.sin(headingRad) * t * 10) / metersPerDegreeLon
 
     positions.push({
       icao24,
-      lat: prev.lat + dLat,
-      lon: prev.lon + dLon,
+      lat: prev.lat + (next.lat - prev.lat) * t,
+      lon: prev.lon + (next.lon - prev.lon) * t,
       trueTrack: next.trueTrack,
       callsign: next.callsign,
     })
