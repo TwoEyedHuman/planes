@@ -24,6 +24,7 @@ export async function fetchPlanes(bounds) {
       lon: s[5],
       lat: s[6],
       onGround: s[8],
+      velocity: s[9] ?? 0,
       trueTrack: s[10] ?? 0,
     }))
 }
