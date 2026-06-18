@@ -13,3 +13,44 @@ html, body {
   width: 100%;
   height: 100%;
 }
+
+.plane-icon.selected {
+  filter: drop-shadow(0 0 4px #4da3ff) drop-shadow(0 0 4px #4da3ff);
+}
+
+.detail-card {
+  display: none;
+  position: fixed;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  background: rgba(10, 14, 20, 0.85);
+  color: #cfe8ff;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  padding: 10px 16px;
+  border-radius: 0;
+  max-width: calc(100vw - 32px);
+  pointer-events: none;
+}
+
+.detail-card.visible {
+  display: block;
+}
+
+.detail-card-row {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.detail-card-airline {
+  font-weight: bold;
+  letter-spacing: 0.5px;
+}
+
+.detail-card-type {
+  color: #8fb6d9;
+}

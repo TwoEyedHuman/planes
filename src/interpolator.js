@@ -14,6 +14,7 @@ export function updateSnapshot(planes, pollTime = Date.now()) {
       lon: plane.lon,
       velocity: plane.velocity ?? 0,
       trueTrack: plane.trueTrack ?? 0,
+      callsign: plane.callsign ?? '',
     }
     const existing = tracked.get(plane.icao24)
     tracked.set(plane.icao24, {
@@ -54,6 +55,7 @@ export function getInterpolatedPositions(now) {
       lat: prev.lat + dLat,
       lon: prev.lon + dLon,
       trueTrack: next.trueTrack,
+      callsign: next.callsign,
     })
   }
 
