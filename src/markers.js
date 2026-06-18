@@ -9,12 +9,17 @@ const PLANE_ICON_SVG = `
 const activeMarkers = new Map()
 
 function createPlaneElement(trueTrack) {
+  // maplibregl.Marker overwrites this element's own style.transform for
+  // positioning, so rotation must live on a child wrapper instead.
   const el = document.createElement('div')
-  el.style.width = '24px'
-  el.style.height = '24px'
-  el.style.transformOrigin = 'center'
-  el.style.transform = `rotate(${trueTrack}deg)`
-  el.innerHTML = PLANE_ICON_SVG
+  const inner = document.createElement('div')
+  inner.className = 'plane-icon'
+  inner.style.width = '24px'
+  inner.style.height = '24px'
+  inner.style.transformOrigin = 'center'
+  inner.style.transform = `rotate(${trueTrack}deg)`
+  inner.innerHTML = PLANE_ICON_SVG
+  el.appendChild(inner)
   return el
 }
 
@@ -27,7 +32,7 @@ export function upsertMarkers(planes, map) {
 
     if (existing) {
       existing.setLngLat([plane.lon, plane.lat])
-      existing.getElement().style.transform = `rotate(${plane.trueTrack}deg)`
+      existing.getElement().querySelector('.plane-icon').style.transform = `rotate(${plane.trueTrack}deg)`
     } else {
       const marker = new maplibregl.Marker({
         element: createPlaneElement(plane.trueTrack),
